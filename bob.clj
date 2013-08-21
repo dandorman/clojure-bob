@@ -1,9 +1,18 @@
 (ns bob
   (:use [clojure.string :only [trim upper-case]]))
 
+(defn- silence? [message]
+  (empty? (trim message)))
+
+(defn- shout? [message]
+  (= message (upper-case message)))
+
+(defn- question? [message]
+  (= (last message) \?))
+
 (defn response-for [message]
   (cond
-    (empty? (trim message))          "Fine. Be that way."
-    (= message (upper-case message)) "Woah, chill out!"
-    (= (last message) \?)            "Sure."
-    :else                            "Whatever."))
+    (silence?  message) "Fine. Be that way."
+    (shout?    message) "Woah, chill out!"
+    (question? message) "Sure."
+    :else               "Whatever."))
